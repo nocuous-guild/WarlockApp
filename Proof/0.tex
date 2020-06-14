@@ -1,0 +1,57 @@
+
+\section*{Legend}
+$$
+D = \text{Total DPS over the fight}
+$$
+$$
+T = \text{Fight length in seconds}
+$$
+$$
+R_j = \text{Raw damage of the $j^\text{th}$ shadow bolt,} \ j \in \{ 1, ..., N \}
+$$
+$$
+N = \text{Number of shadow bolts cast}
+$$
+
+
+\section*{Total DPS Equation}
+%
+First note that if there is no life tapping needed for the fight, we have
+%
+$$
+N = \left\lfloor \frac{T}{2.5} \right\rfloor
+$$
+%
+and the total damage over time will be the sum of all the random damage from each cast
+%
+$$
+D = \sum_{j=1}^N R_j
+$$
+%
+and each damage draw is
+%
+$$
+R_j = (B_j + \frac{3}{3.5} s) H_j (2 C_j + 1)
+$$
+%
+where $B_j$ is the random base damage of the $j^\text{th}$ cast, $s$ is the spell power of the caster, $H_j$ is the binary outcome of the spell hit occurring with probability $\min \{ 0.83 + p, 0.99 \}$ where $p$ is the caster's hit chance, and $C_j$ is likewise the binary event of a critical strike occurring with probability equal to the caster's crit chance.
+
+Technically, the value of $B_j$ is drawn uniformly, but the true distribution for the sum of these is difficult to work with so I'll approximate $D$ as Normal in the limit of large $N$.
+
+
+
+\section*{Extending to Life Tap}
+%
+Longer fights require Life Tap, even with the use of Demonic Runes or Mana Potions. In this case, we have
+%
+$$
+N = \left\lfloor \frac{T-L}{2.5} \right\rfloor
+$$
+%
+where $L$ is the time spent life tapping. If we have $M$ total life taps during the fight, then
+%
+$$
+L = 1.5 M
+$$
+%
+by the Global Cooldown (GCD).

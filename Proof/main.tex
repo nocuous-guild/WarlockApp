@@ -1,0 +1,101 @@
+\documentclass[12pt]{article}
+
+\usepackage[margin=0.6in]{geometry}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{amsmath,amsthm,amssymb,amsfonts, color, graphicx,ulem, float,wrapfig,cancel,bm}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    linkcolor={red!50!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+
+
+\makeatletter
+\def\resetMathstrut@{%
+	\setbox\z@\hbox{%
+		\mathchardef\@tempa\mathcode`\[\relax
+		\def\@tempb##1"##2##3{\the\textfont"##3\char"}%
+		\expandafter\@tempb\meaning\@tempa \relax
+	}%
+	\ht\Mathstrutbox@\ht\z@ \dp\Mathstrutbox@\dp\z@}
+\makeatother
+\begingroup
+\catcode`(\active \xdef({\left\string(}
+\catcode`)\active \xdef){\right\string)}
+\endgroup
+\mathcode`(="8000 \mathcode`)="8000
+
+
+
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+	\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{claim}[2][Claim]{\begin{trivlist}
+	\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\DeclareMathOperator*{\avg}{avg}
+\DeclareMathOperator*{\var}{var}
+\DeclareMathOperator*{\diver}{div}
+\DeclareMathOperator*{\curl}{curl}
+\DeclareMathOperator*{\proj}{proj}
+
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\N}{\mathbb{N}}
+
+\let\P\relax
+\newcommand{\P}{\mathbb{P}}
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\V}{\mathbb{V}}
+
+\let\C\relax
+\newcommand{\C}{\mathbb{C}}
+
+\newcommand{\bigO}{\mathcal{O}}
+\newcommand{\Four}{\mathcal{F}}
+\newcommand{\Lap}{\mathcal{L}}
+
+\let\a\relax
+\newcommand{\a}{\alpha}
+\let\b\relax
+\newcommand{\b}{\beta}
+\let\c\relax
+\newcommand{\c}{\gamma}
+
+\newcommand{\simiid}{\stackrel{\text{iid}}{\sim}}
+
+\newcommand{\pder}[2][]{\frac{\partial#1}{\partial#2}}
+\newcommand{\twopder}[2][]{\frac{\partial^2#1}{\partial#2^2}}
+
+
+% \begin{figure}[H]
+% \begin{center}
+%     \includegraphics[width=10cm]{Fig.eps}
+% \end{center}
+% \end{figure}
+
+%\cancel{5y}
+%\bcancel{5y}
+%\xcancel{5y}
+%\cancelto{\infty}{5y}
+
+
+\begin{document}
+
+\title{Proof of Warlock DPS Equations}
+\author{by Deadlord}
+\date{}
+
+\maketitle
+
+
+\input{0.tex}
+\newpage
+
+
+\end{document}
