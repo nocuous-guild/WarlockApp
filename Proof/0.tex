@@ -55,3 +55,17 @@ L = 1.5 M
 $$
 %
 by the Global Cooldown (GCD).
+
+
+
+\section*{Expected Value}
+%
+$$
+\E[R_j] = E[(B_j + \frac{3}{3.5} s) H_j (2 C_j + 1)]
+= (\E[B_j] + \frac{3}{3.5} s) \E[H_j] (2 \E[C_j] + 1)
+$$
+$$
+= (\frac{a_j^k + b_j^k}{2} + \frac{3}{3.5} s) p (2 q + 1)
+$$
+%
+where $a_j^k$ is the lower bound of the base shadow bolt damage of rank $k$ on the $j^\text{th}$ cast. Likewise, $b_j^k$ is this upper bound.
