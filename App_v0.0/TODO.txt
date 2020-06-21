@@ -1,0 +1,2 @@
+6/9/20: Need to verify default mana/int/crit values
+6/9/20: Need to fix mu and sigma calculations to account for rank 10 sbolt option
