@@ -54,18 +54,53 @@ $$
 L = 1.5 M
 $$
 %
-by the Global Cooldown (GCD).
+by the Global Cooldown (GCD)... Fill in details of iterative solver for N
 
 
 
 \section*{Expected Value}
 %
 $$
-\E[R_j] = E[(B_j + \frac{3}{3.5} s) H_j (2 C_j + 1)]
+\E[R_j] = \E\left[ (B_j + \frac{3}{3.5} s) H_j (2 C_j + 1) \right]
 = (\E[B_j] + \frac{3}{3.5} s) \E[H_j] (2 \E[C_j] + 1)
 $$
 $$
-= (\frac{a_j^k + b_j^k}{2} + \frac{3}{3.5} s) p (2 q + 1)
+= (\frac{a_k + b_k}{2} + \frac{3}{3.5} s) p (2 q + 1)
+$$
+%
+where $a_k$ is the lower bound of the base shadow bolt damage of rank $k$. Likewise, $b_j^k$ is this upper bound.
+
+
+
+\section*{Variability}
+%
+$$
+\V[R_j] = \V\left[ (B_j + \frac{3}{3.5} s) H_j (2 C_j + 1) \right]
+$$
+$$
+= (\V\left[ B_j + \frac{3}{3.5} s \right] + \E^2\left[ B_j + \frac{3}{3.5} s \right])
+(\V\left[ H_j \right] + \E^2\left[ H_j \right])
+(\V\left[ 2 C_j + 1 \right] + \E^2\left[ 2 C_j + 1 \right])
+$$
+$$
+- \E^2\left[ B_j + \frac{3}{3.5} s \right] \E^2\left[ H_j \right] \E^2\left[ 2 C_j + 1 \right]
+$$
+$$
+= (\V\left[ B_j \right] + ( \E\left[ B_j \right] + \frac{3}{3.5} s)^2)
+(p (1 - p) + p^2)
+( (1.5 + 0.5 \mathbb{I}(\text{ruin}))^2 \V\left[ C_j \right] + ((1.5 + 0.5 \mathbb{I}(\text{ruin})) \E\left[ C_j \right] + 1)^2)
+$$
+$$
+- (\E\left[ B_j \right] + \frac{3}{3.5} s)^2 p^2 ((1.5 + 0.5 \mathbb{I}(\text{ruin})) \E\left[ C_j \right] + 1)^2
+$$
+$$
+= (\frac{(b_k-a_k)^2}{12} + ( \frac{a_k + b_k}{2} + \frac{3}{3.5} s)^2)
+p
+( (1.5 + 0.5 \mathbb{I}(\text{ruin}))^2 q (1 - q) + ((1.5 + 0.5 \mathbb{I}(\text{ruin})) q + 1)^2)
+$$
+$$
+- (\frac{a_k + b_k}{2} + \frac{3}{3.5} s)^2 p^2 ((1.5 + 0.5 \mathbb{I}(\text{ruin})) q + 1)^2
 $$
 %
 where $a_j^k$ is the lower bound of the base shadow bolt damage of rank $k$ on the $j^\text{th}$ cast. Likewise, $b_j^k$ is this upper bound.
+
