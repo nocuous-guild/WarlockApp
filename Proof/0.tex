@@ -1,67 +1,78 @@
 
 \section*{Legend}
 $$
-D = \text{Total DPS over the fight}
+D = \text{Total damage over the fight}
 $$
 $$
 T = \text{Fight length in seconds}
 $$
 $$
-R_j = \text{Raw damage of the $j^\text{th}$ shadow bolt,} \ j \in \{ 1, ..., N \}
+\text{DPS} = \frac{D}{T} = \text{damage per second}
 $$
 $$
-N = \text{Number of shadow bolts cast}
+R_j = \text{Raw damage of the $j^\text{th}$ shadow bolt,} \ j \in \{ 1, ..., N_\text{sb} \}
+$$
+$$
+N_\text{sb} = \text{Number of shadow bolts cast}
+$$
+$$
+N_\text{corr} = \text{Number of corruption casts}
+$$
+$$
+N_\text{immo} = \text{Number of immolate casts}
+$$
+$$
+N_\text{curse} = \text{Number of curse casts (agony or doom)}
 $$
 
 
 \section*{Total DPS Equation}
 %
-First note that if there is no life tapping needed for the fight, we have
+The total damage over time will be the sum of all the random damage from each cast
 %
 $$
-N = \left\lfloor \frac{T}{2.5} \right\rfloor
+D = \sum_{j=1}^{N_\text{sb}} R_j + \sum_{j=1}^{N_\text{corr}} O_j + \sum_{j=1}^{N_\text{immo}} I_j + \sum_{j=1}^{N_\text{curse}} U_j + 
+\varepsilon
 $$
 %
-and the total damage over time will be the sum of all the random damage from each cast
+where $\varepsilon$ is the residual damage from unclipped DoTs. Each shadow bolt damage draw is
 %
 $$
-D = \sum_{j=1}^N R_j
+R_j = (B_j + \frac{3}{3.5} s) H_j \left[ (1.5 + 0.5 \mathbb{I}(\text{ruin})) C_j + 1 \right]
 $$
 %
-and each damage draw is
-%
-$$
-R_j = (B_j + \frac{3}{3.5} s) H_j (2 C_j + 1)
-$$
-%
-where $B_j$ is the random base damage of the $j^\text{th}$ cast, $s$ is the spell power of the caster, $H_j$ is the binary outcome of the spell hit occurring with probability $\min \{ 0.83 + p, 0.99 \}$ where $p$ is the caster's hit chance, and $C_j$ is likewise the binary event of a critical strike occurring with probability equal to the caster's crit chance.
+where $B_j$ is the random base damage of the $j^\text{th}$ cast, $s$ is the spell power of the caster, $H_j$ is the binary outcome of the spell hit occurring with probability $\min \{ 0.83 + p, 0.99 \}$ where $p$ is the caster's hit chance, and $C_j$ is likewise the binary event of a critical strike occurring with probability equal to the caster's shadow bolt crit chance (including talents).
 
-Technically, the value of $B_j$ is drawn uniformly, but the true distribution for the sum of these is difficult to work with so I'll approximate $D$ as Normal in the limit of large $N$.
+Each damage over time (DoT) sources for corruption and curses are
+%
+$$
+X_j = x + s \qquad X = O,U \qquad x = o,u
+$$
+%
+where the lower case is the base static damage of each spell. Note this does not consider the random event that the spell misses, as this should not change the total number of DoT casts which is what the variable $N_\text{corr}$ truly represents (the hit chance \textit{is} taken into account when evaluating the number of filler shadow bolts that can be cast, and their associated mana cost). As such, these DoTs do not contribute variable damage, which will be important to note in the calculation of variance. Immolate, as a hybrid spell, is different
+%
+$$
+I_j = \left[ A_j + (\frac{1.5}{3.5})^2 s \right] [(1.5 + 0.5 \mathbb{I}(\text{ruin})) C_j + 1] + i + \frac{3.5}{5} s
+$$
+%
+for base DoT damage $i$, randomly drawn base damage $A_j$, and unique spell coefficients derived in the supplemental section.
 
-
-
-\section*{Extending to Life Tap}
-%
-Longer fights require Life Tap, even with the use of Demonic Runes or Mana Potions. In this case, we have
-%
-$$
-N = \left\lfloor \frac{T-L}{2.5} \right\rfloor
-$$
-%
-where $L$ is the time spent life tapping. If we have $M$ total life taps during the fight, then
-%
-$$
-L = 1.5 M
-$$
-%
-by the Global Cooldown (GCD)... Fill in details of iterative solver for N
+Technically, the value of $B_j$ is drawn uniformly, but the true distribution for the sum of these is difficult to work with analytically so I will need to approximate $D$ as being Normal in the limit of large $N_\text{sb}$. Thankfully, the only real assumptions required for this are that the variability of the total damage is finite (\textit{i.e.}, it does not diverge to infinity) and that the random outcomes of each shadow bolt cast or other actions are sufficiently weak in their correlations to all other events.
 
 
 
 \section*{Expected Value}
 %
 $$
-\E[R_j] = \E\left[ (B_j + \frac{3}{3.5} s) H_j (2 C_j + 1) \right]
+\mu = \E[D] = \E \left[ \sum_{j=1}^{N_\text{sb}} R_j + \sum_{j=1}^{N_\text{corr}} O_j + \sum_{j=1}^{N_\text{immo}} I_j + \sum_{j=1}^{N_\text{curse}} U_j + 
+\varepsilon \right]
+$$
+$$
+= \sum_{j=1}^{N_\text{sb}} \E \left[ R_j \right] + \sum_{j=1}^{N_\text{corr}} \E \left[ O_j \right] + \sum_{j=1}^{N_\text{immo}} \E \left[ I_j \right] + \sum_{j=1}^{N_\text{curse}} \E \left[ U_j \right] + 
+\E \left[ \varepsilon \right]
+$$
+$$
+\mu = \E[R_j] = \E\left[ (B_j + \frac{3}{3.5} s) H_j (2 C_j + 1) \right]
 = (\E[B_j] + \frac{3}{3.5} s) \E[H_j] (2 \E[C_j] + 1)
 $$
 $$
@@ -75,7 +86,7 @@ where $a_k$ is the lower bound of the base shadow bolt damage of rank $k$. Likew
 \section*{Variability}
 %
 $$
-\V[R_j] = \V\left[ (B_j + \frac{3}{3.5} s) H_j (2 C_j + 1) \right]
+\sigma^2 = \V[R_j] = \V\left[ (B_j + \frac{3}{3.5} s) H_j (2 C_j + 1) \right]
 $$
 $$
 = (\V\left[ B_j + \frac{3}{3.5} s \right] + \E^2\left[ B_j + \frac{3}{3.5} s \right])
@@ -104,3 +115,82 @@ $$
 %
 where $a_j^k$ is the lower bound of the base shadow bolt damage of rank $k$ on the $j^\text{th}$ cast. Likewise, $b_j^k$ is this upper bound.
 
+
+
+\section*{Convergence to a Central Limit}
+%
+If the fight is sufficiently long, the total DPS over the fight,
+%
+$$
+\text{DPS} = \frac{D}{T}
+\rightarrow \mathcal{N}(\frac{\mu}{T}, \frac{\sigma^2}{T^2})
+$$
+%
+and the general question of DPS predictability becomes phrased as the value of $x$ such that
+%
+$$
+\P(\text{DPS} > x) = c
+$$
+%
+for a fixed value of 'reliability' $c \in [0,1]$. This can be calculated exactly for the Normal distribution as
+%
+$$
+\P(\text{DPS} > x) = 1 - \P(\text{DPS} \leq x)
+= 1 - F_\text{DPS}(x)
+= 1 - \frac{1}{2} \left[ 1 + \text{erf}(\frac{ x - \frac{\mu}{T} }{ \frac{\sigma}{T} \sqrt{2} }) \right] = c
+$$
+%
+$$
+\frac{1}{2} \left[ 1 + \text{erf}(\frac{ x - \frac{\mu}{T} }{ \frac{\sigma}{T} \sqrt{2} }) \right] = 1 - c
+$$
+$$
+x = \sqrt{2} \text{erf}^{-1} \left[ 2 (1 - c) - 1 \right] \frac{\sigma}{T} + \frac{\mu}{T}
+$$
+%
+which provides the perpective that when we 'optimize' DPS in this sense, we are not only maximizing the average $\mu$ but also at some assigned cost to the variability through $\sigma$, which can be either penalizing $c > \frac{1}{2}$ or enhancing $c < \frac{1}{2}$. If the user does not wish to account for variance, the value at equality $c = \frac{1}{2}$ can be used to cancel out this contribution.
+
+
+
+\section*{Solving for $N_\text{sb}$}
+%
+First note that if there is no life tapping needed for the fight, and no DoTs, we have
+%
+$$
+N_\text{sb} = \left\lfloor \frac{T}{2.5} \right\rfloor
+$$
+%
+but more generally, the value of $N_\text{sb}$ for a given fight length will depend on the maximum mana of the warlock, the total mana gained off the global cooldown from items such as mana potions, dark runes, and mp5 effects, and of course the minimal number of lifetaps required to maximize the number of shadow bolt casts on a given fight. Also relevant is the optional decision to include DoT spells, and if so, which. The strategy for including DoTs in the calculation is to pre-allocate the maximal number of full casts possible, and remove that required casting time and mana from the resources available for the shadow bolt filler.
+
+This number of casts is determined exactly for a specific fight length $T$ via the following iterative method...
+%
+$$
+\cdots
+$$
+
+
+
+\subsection*{Supplemental: Immolate spell coefficients}
+%
+Hybrid spells are a bit trickier to calculate the spell coefficient for, so here is the work verifying the values used above... The over-time portion is calculated as
+%
+$$
+OTP = \frac{1}{1 + \frac{1.5}{3.5}}
+= (\frac{5}{3.5})^{-1}
+= \frac{3.5}{5}
+$$
+%
+and the direct portion is then
+%
+$$
+DP = 1 - OTP = \frac{1.5}{5}
+$$
+%
+and the final coefficients are then
+%
+$$
+OTPC = OTP
+$$
+$$
+DPC = \frac{1.5}{3.5} DP
+= (\frac{1.5}{3.5})^2
+$$
