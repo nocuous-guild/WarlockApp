@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6930 64-bit) (preloaded format=pdflatex 2019.1.5)  10 JUL 2020 15:35
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6930 64-bit) (preloaded format=pdflatex 2019.1.5)  25 JUL 2020 13:44
 entering extended mode
 **./main.tex
 (main.tex
@@ -478,11 +478,11 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (0.tex [1
 
 {C:/Users/Baker House/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-Overfull \hbox (30.63199pt too wide) detected at line 103
+Overfull \hbox (30.63199pt too wide) detected at line 110
 \OT1/cmr/m/n/12 = [] [] []
  []
 
-[2] [3]) [4]
+[2] [3] [4]) [5]
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 101.
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 101.
  (main.aux)
@@ -493,31 +493,34 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 101.
  ) 
 Here is how much of TeX's memory you used:
- 7267 strings out of 492946
- 104815 string characters out of 3123601
+ 7281 strings out of 492946
+ 105018 string characters out of 3123601
  214935 words of memory out of 3000000
- 11043 multiletter control sequences out of 15000+200000
- 21193 words of font info for 79 fonts, out of 3000000 for 9000
+ 11052 multiletter control sequences out of 15000+200000
+ 23662 words of font info for 88 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  28i,7n,35p,682b,325s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Users/Baker House/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/am
 sfonts/cm/cmbx12.pfb><C:/Users/Baker House/AppData/Local/Programs/MiKTeX 2.9/fo
 nts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/Baker House/AppData/Local/Pro
-grams/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/Baker Hous
-e/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C
-:/Users/Baker House/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfon
-ts/cm/cmr12.pfb><C:/Users/Baker House/AppData/Local/Programs/MiKTeX 2.9/fonts/t
-ype1/public/amsfonts/cm/cmr17.pfb><C:/Users/Baker House/AppData/Local/Programs/
-MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/Baker House/AppDat
-a/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/B
-aker House/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cms
-y10.pfb><C:/Users/Baker House/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/pub
-lic/amsfonts/cm/cmsy8.pfb><C:/Users/Baker House/AppData/Local/Programs/MiKTeX 2
-.9/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Users/Baker House/AppData/Loca
-l/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (4 pages, 140285 bytes).
+grams/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/Baker Hous
+e/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi12.pfb><
+C:/Users/Baker House/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfo
+nts/cm/cmmi8.pfb><C:/Users/Baker House/AppData/Local/Programs/MiKTeX 2.9/fonts/
+type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Baker House/AppData/Local/Programs
+/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/Baker House/AppD
+ata/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/User
+s/Baker House/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/
+cmr6.pfb><C:/Users/Baker House/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/pu
+blic/amsfonts/cm/cmr8.pfb><C:/Users/Baker House/AppData/Local/Programs/MiKTeX 2
+.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/Baker House/AppData/Loca
+l/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/Baker 
+House/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti12.p
+fb><C:/Users/Baker House/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/a
+msfonts/symbols/msbm10.pfb>
+Output written on main.pdf (5 pages, 170517 bytes).
 PDF statistics:
- 80 PDF objects out of 1000 (max. 8388607)
- 12 named destinations out of 1000 (max. 500000)
+ 97 PDF objects out of 1000 (max. 8388607)
+ 17 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -24,21 +24,28 @@ $$
 $$
 N_\text{curse} = \text{Number of curse casts (agony or doom)}
 $$
+$$
+N_\text{sf} = \text{Number of soul fire casts}
+$$
 
 
 \section*{Total DPS Equation}
 %
 The total damage over time will be the sum of all the random damage from each cast
 %
+\small
 $$
-D = \sum_{j=1}^{N_\text{sb}} R_j + \sum_{j=1}^{N_\text{corr}} O_j + \sum_{j=1}^{N_\text{immo}} I_j + \sum_{j=1}^{N_\text{curse}} U_j + 
-\varepsilon
+D = \left[ (0.1 \mathbb{I}_{\text{CoS}} + 1) (\sum_{j=1}^{N_\text{sb}} R_j + \sum_{j=1}^{N_\text{corr}} O_j +
+\sum_{j=1}^{N_\text{curse}} U_j) + (0.1 \mathbb{I}_{\text{CoE}} + 1) (\sum_{j=1}^{N_\text{immo}} I_j +
+\sum_{j=1}^{N_\text{sf}} S_j) +
+\varepsilon \right] (0.1 \mathbb{I}_{\text{DMF}} + 1)
 $$
+\normalsize
 %
 where $\varepsilon$ is the residual damage from unclipped DoTs. Each shadow bolt damage draw is
 %
 $$
-R_j = (B_j + \frac{3}{3.5} s) H_j \left[ (1.5 + 0.5 \mathbb{I}(\text{ruin})) C_j + 1 \right]
+R_j = (B_j + \frac{3}{3.5} s) H_j \left[ (1.5 + 0.5 \mathbb{I}_{\text{ruin}}) C_j + 1 \right]
 $$
 %
 where $B_j$ is the random base damage of the $j^\text{th}$ cast, $s$ is the spell power of the caster, $H_j$ is the binary outcome of the spell hit occurring with probability $\min \{ 0.83 + p, 0.99 \}$ where $p$ is the caster's hit chance, and $C_j$ is likewise the binary event of a critical strike occurring with probability equal to the caster's shadow bolt crit chance (including talents).
@@ -52,7 +59,7 @@ $$
 where the lower case is the base static damage of each spell. Note this does not consider the random event that the spell misses, as this should not change the total number of DoT casts which is what the variable $N_\text{corr}$ truly represents (the hit chance \textit{is} taken into account when evaluating the number of filler shadow bolts that can be cast, and their associated mana cost). As such, these DoTs do not contribute variable damage, which will be important to note in the calculation of variance. Immolate, as a hybrid spell, is different
 %
 $$
-I_j = \left[ A_j + (\frac{1.5}{3.5})^2 s \right] [(1.5 + 0.5 \mathbb{I}(\text{ruin})) C_j + 1] + i + \frac{3.5}{5} s
+I_j = \left[ A_j + (\frac{1.5}{3.5})^2 s \right] [(1.5 + 0.5 \mathbb{I}_{\text{ruin}}) C_j + 1] + i + \frac{3.5}{5} s
 $$
 %
 for base DoT damage $i$, randomly drawn base damage $A_j$, and unique spell coefficients derived in the supplemental section.
@@ -123,10 +130,10 @@ If the fight is sufficiently long, the total DPS over the fight,
 %
 $$
 \text{DPS} = \frac{D}{T}
-\rightarrow \mathcal{N}(\frac{\mu}{T}, \frac{\sigma^2}{T^2})
+\rightarrow \mathcal{N}(\frac{N}{T} \mu, \frac{N}{T^2} \sigma^2)
 $$
 %
-and the general question of DPS predictability becomes phrased as the value of $x$ such that
+where $N \sim \bigO(T)$ is the total scaling factor of the number of casts of spells such as $N_\text{sb}$, $N_\text{corr}$, and so on. The general question of DPS predictability becomes phrased as the value of $x$ such that
 %
 $$
 \P(\text{DPS} > x) = c
@@ -169,6 +176,32 @@ $$
 
 
 
+\section*{DoT Clipping}
+
+\subsection*{Curse of Agony (CoA)}
+%
+$$
+\varepsilon_\text{CoA} = (? + s) \sum_{k=1}^{N_\text{CoA}} f(k)
+\qquad
+N_\text{CoA} = \left\lfloor \frac{\varepsilon_T}{24} \cdot 12 \right\rfloor = \left\lfloor \frac{\varepsilon_T}{2} \right\rfloor
+$$
+%
+where $?$ is the base damage for that rank of CoA
+%
+$$
+f(k) = 0.0541 \ \mathbb{I}(k \in \Z_1^4)
++ 0.0836 \ \mathbb{I}(k \in \Z_5^8)
++ 0.1123 \ \mathbb{I}(k \in \Z_9^{12})
+$$
+
+\subsection*{Corruption}
+%
+$$
+\varepsilon_\text{cor} = \left\lfloor () \right\rfloor
+$$
+
+
+
 \subsection*{Supplemental: Immolate spell coefficients}
 %
 Hybrid spells are a bit trickier to calculate the spell coefficient for, so here is the work verifying the values used above... The over-time portion is calculated as
@@ -193,4 +226,35 @@ $$
 $$
 DPC = \frac{1.5}{3.5} DP
 = (\frac{1.5}{3.5})^2
+$$
+
+
+
+
+\section*{Supplemental: Raid-wide optimal choice of $c$?}
+%
+The choice of $c$ is often left to an individual, if that person wishes to have higher maximal parses, or more reliably higher average parses, etc... But there is a question of raid-wide DPS increase if each individual can be considered relatively homogeneous, is there an optimal choice for maximizing the total raid-wide damage?
+
+The exact value for this is of course
+%
+$$
+\text{D}_\text{raid} = \sum_{p=1}^{M_\text{DPS}} \text{D}_p
+$$
+%
+where $\text{D}_p$ is the total damage of player $p$ out of the total $M_\text{DPS}$ DPS classes for a given fight. Similar to the previous argument of converge to a Central Limit in time over a long fight, we have potentially weaker convergence to a Central Limit over a large number of DPS players
+%
+$$
+\text{D}_\text{raid} \rightarrow \mathcal{N}(M_\text{DPS} \frac{N}{T}, M_\text{DPS} \frac{N}{T^2})
+$$
+$$
+\P(\text{DPS} > x) = 1 - \P(\text{DPS} \leq x)
+= 1 - F_\text{DPS}(x)
+= 1 - \frac{1}{2} \left[ 1 + \text{erf}(\frac{ x - \frac{\mu}{T} }{ \frac{\sigma}{T} \sqrt{2} }) \right] = c
+$$
+%
+$$
+\frac{1}{2} \left[ 1 + \text{erf}(\frac{ x - \frac{\mu}{T} }{ \frac{\sigma}{T} \sqrt{2} }) \right] = 1 - c
+$$
+$$
+x = \sqrt{2} \text{erf}^{-1} \left[ 2 (1 - c) - 1 \right] \frac{\sigma}{T} + \frac{\mu}{T}
 $$
